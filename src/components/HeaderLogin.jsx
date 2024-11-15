@@ -15,7 +15,7 @@ export const HeaderLogin = () => {
         justifyContent: 'space-between',
         padding: '0.5rem 2rem', // Ajusta el padding para más espacio en los lados
         backgroundColor: 'white',
-        boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
+        boxShadow: 'none',
         zIndex: 1000, // Asegura que el header esté sobre otros elementos
       }}
     >

@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import HeaderLogin from './components/HeaderLogin';
+import HeaderNonLogin from './components/HeaderNonLogin';
 import Navbar from './components/Navbar';
 import FlightSearchForm from './components/FlightSearchForm';
 import Aerolineas from './pages/Aerolíneas';
@@ -15,12 +16,13 @@ import Vuelos from './pages/Vuelos';
 // Componente para manejar el layout principal
 function MainLayout() {
   const location = useLocation();
-  const hideNavbarPaths = ['/login', '/login/signin', '/login/signup'];
+  const loginPaths = ['/login', '/login/signin', '/login/signup'];
+  const isLoginPage = loginPaths.includes(location.pathname);
 
   return (
     <div>
-      <HeaderLogin />
-      {!hideNavbarPaths.includes(location.pathname) && <Navbar />}
+      {isLoginPage ? <HeaderLogin /> : <HeaderNonLogin />}
+      {!isLoginPage && <Navbar />}
       <Routes>
         <Route path="/" element={<FlightSearchForm />} />
         <Route path="/aerolineas" element={<Aerolineas />} />
