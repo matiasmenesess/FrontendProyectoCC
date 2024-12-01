@@ -49,6 +49,7 @@ const SignIn = () => {
       // Comprobamos si el token está presente
       if (data.token) {
         setToken(data.token); // Almacenamos el token en el estado
+        localStorage.setItem('token', data.token);
         navigate('/dashboard'); // Redirigimos al dashboard
       } else {
         setError(true); // Si no hay token, mostramos un error
