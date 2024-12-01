@@ -4,12 +4,15 @@ import { useNavigate } from 'react-router-dom';
 import HeaderLogin from '../components/HeaderLogin';
 import EmailIcon from '@mui/icons-material/Email';
 import AccountCircle from '@mui/icons-material/AccountCircle';
+import axios from 'axios'; // Importa axios
 
 const SignIn = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState(''); // Estado para la contraseña
   const [step, setStep] = useState(1);
   const [error, setError] = useState(false);
+  const [token, setToken] = useState(null); // Estado para almacenar el token
 
   const handleNext = () => {
     if (step === 1) {
@@ -20,6 +23,26 @@ const SignIn = () => {
         setError(false);
         setStep(2); // Pasar al siguiente formulario
       }
+    }
+  };
+
+  const handleLogin = async () => {
+    try {
+      // Realizar la solicitud POST a la API con el email y la contraseña
+      const response = await axios.post('https://6bk8qafhu6.execute-api.us-east-1.amazonaws.com/dev/usuarios/login', {
+        user_id: email,
+        password: password
+      });
+
+      // Si la respuesta es exitosa, guardar el token
+      if (response.data.token) {
+        setToken(response.data.token);
+        navigate('/dashboard'); // Redirigir al dashboard
+      }
+    } catch (error) {
+      // Manejar errores
+      console.error("Error en la autenticación:", error);
+      setError(true); // Mostrar error si hay un problema con la solicitud
     }
   };
 
@@ -64,7 +87,7 @@ const SignIn = () => {
                 cursor: 'pointer',
                 fontWeight: 'bold',
                 '&:hover': {
-                  color: '#b71c1c', // Cambiar a un rojo más oscuro al pasar el mouse
+                  color: '#b71c1c',
                 },
               }}
             >
@@ -111,7 +134,7 @@ const SignIn = () => {
                 fullWidth
                 variant="outlined"
                 type="email"
-                placeholder='minombre@ejemplo.com'
+                placeholder="minombre@ejemplo.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 error={error}
@@ -198,22 +221,10 @@ const SignIn = () => {
               <TextField
                 fullWidth
                 variant="outlined"
-                type='password'
-                placeholder='Ejemplo123'
+                type="password"
+                placeholder="Ejemplo123"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        onClick={handlePasswordVisibility}
-                        edge="end"
-                      >
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
                 sx={{
                   marginBottom: 3,
                   '& .MuiOutlinedInput-root': {
@@ -230,7 +241,7 @@ const SignIn = () => {
 
               <Button
                 variant="contained"
-                onClick={() => navigate('/dashboard')}
+                onClick={handleLogin} // Llamada a la API
                 sx={{
                   textTransform: 'none',
                   fontFamily: 'Poppins, sans-serif',
