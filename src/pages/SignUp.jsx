@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import HeaderLogin from '../components/HeaderLogin';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { signUpUser } from '../api'; // Importa la función signUpUser
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -32,13 +31,32 @@ const SignUp = () => {
 
   const handleSignUp = async () => {
     try {
-      await signUpUser(email, password); // Llamar a la función signUpUser
-      setSuccessAlert(true);
-      setTimeout(() => {
-        navigate('/login', { state: { email: email } }); // Redirige a login
-      }, 2000);
+      const response = await fetch('https://6bk8qafhu6.execute-api.us-east-1.amazonaws.com/dev/usuarios/crear', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: email,
+          password: password,
+        }),
+      });
+      if (response.ok) {
+        console.log(response)
+        setSuccessAlert(true);
+        setTimeout(() => {
+          navigate('/login', { state: { email: email } });
+        }, 2000); // Redirige a login después de 2 segundos
+      } else {
+        // Manejar error si la creación del usuario falla
+        setError(true);
+      }
     } catch (error) {
-      setError(true); // Muestra error si no se pudo crear la cuenta
+      console.log(email)
+      console.log(password)
+      console.log(response)
+      console.error("Error al crear la cuenta:", error);
+      setError(true);
     }
   };
 
@@ -48,13 +66,9 @@ const SignUp = () => {
       <Card sx={{ width: '100%', maxWidth: 450, minHeight: 400, padding: 4, backgroundColor: 'white', borderRadius: 2, boxShadow: 4, marginTop: '3rem' }}>
         <CardContent>
           <Stack direction="row" spacing={1} sx={{ marginBottom: 3 }}>
-            <Link component="button" variant="body2" onClick={() => navigate('/login')} sx={{ color: '#e31c22', textDecoration: 'none', fontWeight: 'bold' }}>
-              Inicia sesión
-            </Link>
+            <Link component="button" variant="body2" onClick={() => navigate('/login')} sx={{ color: '#e31c22', textDecoration: 'none', fontWeight: 'bold' }}>Inicia sesión</Link>
             <Typography variant="body2" sx={{ color: '#1f2937' }}>{'>'}</Typography>
-            <Typography variant="body2" sx={{ color: '#1f2937', fontWeight: 'bold' }}>
-              Crear una cuenta
-            </Typography>
+            <Typography variant="body2" sx={{ color: '#1f2937', fontWeight: 'bold' }}>Crear una cuenta</Typography>
           </Stack>
 
           {successAlert && (
@@ -63,44 +77,38 @@ const SignUp = () => {
 
           {step === 1 && (
             <>
-              <Typography variant="h5" component="h1" align="left" sx={{ fontFamily: 'Poppins, sans-serif', color: '#1f2937', fontWeight: 600, marginBottom: 3 }}>
-                Crea tu cuenta
-              </Typography>
+              <Typography variant="h5" component="h1" align="left" sx={{ fontFamily: 'Poppins, sans-serif', color: '#1f2937', fontWeight: 600, marginBottom: 3 }}>Crea tu cuenta</Typography>
+              <Typography sx={{ fontSize: 16, fontWeight: 'bold', marginBottom: 1 }}>EMAIL</Typography>
               <TextField
                 fullWidth
                 variant="outlined"
                 type="email"
-                placeholder="nombre@ejemplo.com"
+                placeholder='nombre@ejemplo.com'
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 error={error}
-                helperText={error ? 'El email es requerido o el formato es incorrecto' : ''}
+                helperText={error ? 'Este campo es requerido o el formato es incorrecto' : ''}
                 sx={{ marginBottom: 4 }}
               />
-              <Button variant="contained" onClick={handleNext} sx={{ textTransform: 'none', fontFamily: 'Poppins, sans-serif', fontSize: 16, fontWeight: 'bold', backgroundColor: '#e31c22', width: '100%' }}>
-                Siguiente
-              </Button>
+              <Button variant="contained" onClick={handleNext} sx={{ textTransform: 'none', fontFamily: 'Poppins, sans-serif', fontSize: 16, fontWeight: 'bold', backgroundColor: '#e31c22', width: '100%' }}>Siguiente</Button>
             </>
           )}
 
           {step === 2 && (
             <>
-              <Typography variant="h5" component="h1" align="left" sx={{ fontFamily: 'Poppins, sans-serif', color: '#1f2937', fontWeight: 600, marginBottom: 3 }}>
-                Ingresa tu contraseña
-              </Typography>
+              <Typography variant="h5" component="h1" align="left" sx={{ fontFamily: 'Poppins, sans-serif', color: '#1f2937', fontWeight: 600, marginBottom: 3 }}>Crea tu cuenta</Typography>
+              <Typography sx={{ fontSize: 16, fontWeight: 'bold', marginBottom: 1 }}>CONTRASEÑA</Typography>
               <TextField
                 fullWidth
                 variant="outlined"
                 type={showPassword ? 'text' : 'password'}
-                placeholder="Contraseña"
+                placeholder='Ejemplo123'
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                error={error}
-                helperText={error ? 'Este campo es obligatorio' : ''}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
-                      <IconButton onClick={handlePasswordVisibility}>
+                      <IconButton onClick={handlePasswordVisibility} edge="end">
                         {showPassword ? <VisibilityOff /> : <Visibility />}
                       </IconButton>
                     </InputAdornment>
@@ -108,9 +116,10 @@ const SignUp = () => {
                 }}
                 sx={{ marginBottom: 3 }}
               />
-              <Button variant="contained" onClick={handleSignUp} sx={{ textTransform: 'none', fontFamily: 'Poppins, sans-serif', fontSize: 16, fontWeight: 'bold', backgroundColor: '#e31c22', width: '100%' }}>
-                Crear Cuenta
-              </Button>
+              <Typography variant="body2" sx={{ marginBottom: 3 }}>
+                ✔ 8 caracteres &nbsp; ✔ Una mayúscula &nbsp; ✔ Una minúscula &nbsp; ✔ Un número
+              </Typography>
+              <Button variant="contained" onClick={handleSignUp} sx={{ textTransform: 'none', fontFamily: 'Poppins, sans-serif', fontSize: 16, fontWeight: 'bold', backgroundColor: '#e31c22', width: '100%' }}>Crear una cuenta</Button>
             </>
           )}
         </CardContent>
