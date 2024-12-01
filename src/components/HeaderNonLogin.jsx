@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Typography, Divider } from '@mui/material';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import PhoneIcon from '@mui/icons-material/Phone';
@@ -9,9 +9,23 @@ import { useNavigate } from 'react-router-dom';
 
 export const HeaderNonLogin = () => {
   const navigate = useNavigate();
+  const [token, setToken] = useState(null);
+
+  useEffect(() => {
+    // Obtener el token del almacenamiento local
+    const savedToken = localStorage.getItem('token');
+    if (savedToken) {
+      setToken(savedToken); // Si hay token, lo guardamos en el estado
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token'); // Eliminar el token del almacenamiento local
+    setToken(null); // Limpiar el estado del token
+    navigate('/login'); // Redirigir al login
+  };
 
   return (
-    
     <Box
       sx={{
         position: 'fixed',
@@ -80,40 +94,66 @@ export const HeaderNonLogin = () => {
 
         <Box sx={{ display: 'flex', alignItems: 'center', color: '#767e89', marginRight: '1rem' }}>
           <HelpOutlineIcon sx={{ marginRight: '0.3rem' }} />
-          <Typography variant="body2">
-            Ayuda
-          </Typography>
+          <Typography variant="body2">Ayuda</Typography>
         </Box>
 
-        <Divider orientation="vertical" flexItem sx={{ backgroundColor: '#b0b0b0', height: '40px', alignSelf: 'center', marginRight: '1rem', width: '1px' }} />
+        <Divider
+          orientation="vertical"
+          flexItem
+          sx={{ backgroundColor: '#b0b0b0', height: '40px', alignSelf: 'center', marginRight: '1rem', width: '1px' }}
+        />
 
         <Box sx={{ display: 'flex', alignItems: 'center', color: '#767e89', marginRight: '1rem' }}>
           <CardTravelIcon sx={{ marginRight: '0.3rem' }} />
-          <Typography variant="body2">
-            Mis Viajes
-          </Typography>
+          <Typography variant="body2">Mis Viajes</Typography>
         </Box>
 
-        <Divider orientation="vertical" flexItem sx={{ backgroundColor: '#b0b0b0', height: '40px', alignSelf: 'center', marginRight: '1rem', width: '1px' }} />
+        <Divider
+          orientation="vertical"
+          flexItem
+          sx={{ backgroundColor: '#b0b0b0', height: '40px', alignSelf: 'center', marginRight: '1rem', width: '1px' }}
+        />
 
-        <Box
-          onClick={() => navigate('/login')}
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            backgroundColor: '#ffffff',
-            borderRadius: '20px',
-            padding: '0.7rem 1rem',
-            cursor: 'pointer',
-            boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.15)',
-          }}
-        >
-          <AccountCircleIcon sx={{ color: '#767e89', marginRight: '0.5rem' }} />
-          <Typography variant="body2" sx={{ color: '#344358', fontWeight: 'bold' }}>
-            Iniciar Sesión
-          </Typography>
-          <MenuIcon sx={{ color: '#767e89', marginLeft: '0.5rem' }} />
-        </Box>
+        {/* Mostrar "Iniciar Sesión" si no hay token, o "Cerrar Sesión" si el token está presente */}
+        {!token ? (
+          <Box
+            onClick={() => navigate('/login')}
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              backgroundColor: '#ffffff',
+              borderRadius: '20px',
+              padding: '0.7rem 1rem',
+              cursor: 'pointer',
+              boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.15)',
+            }}
+          >
+            <AccountCircleIcon sx={{ color: '#767e89', marginRight: '0.5rem' }} />
+            <Typography variant="body2" sx={{ color: '#344358', fontWeight: 'bold' }}>
+              Iniciar Sesión
+            </Typography>
+            <MenuIcon sx={{ color: '#767e89', marginLeft: '0.5rem' }} />
+          </Box>
+        ) : (
+          <Box
+            onClick={handleLogout} // Llamada para hacer logout
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              backgroundColor: '#ffffff',
+              borderRadius: '20px',
+              padding: '0.7rem 1rem',
+              cursor: 'pointer',
+              boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.15)',
+            }}
+          >
+            <AccountCircleIcon sx={{ color: '#767e89', marginRight: '0.5rem' }} />
+            <Typography variant="body2" sx={{ color: '#344358', fontWeight: 'bold' }}>
+              Cerrar Sesión
+            </Typography>
+            <MenuIcon sx={{ color: '#767e89', marginLeft: '0.5rem' }} />
+          </Box>
+        )}
       </Box>
     </Box>
   );

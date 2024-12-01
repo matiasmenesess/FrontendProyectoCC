@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Card, CardContent, Typography, TextField, Button, Stack, Link, IconButton, InputAdornment } from '@mui/material';
+import { Box, Card, CardContent, Typography, TextField, Button, Stack, Link, InputAdornment } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import HeaderLogin from '../components/HeaderLogin';
 import EmailIcon from '@mui/icons-material/Email';
@@ -28,23 +28,37 @@ const SignIn = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post('https://6bk8qafhu6.execute-api.us-east-1.amazonaws.com/dev/usuarios/login', {
-        user_id: email,
-        password: password,
-      });
-      console.log(response.data)
-      // Axios maneja la respuesta como un objeto con .data
-      if (response.data.token) {
-        setToken(response.data.token);
-        navigate('/dashboard'); // Redirigir al dashboard
+      // Llamada a la API
+      const response = await axios.post(
+        'https://6bk8qafhu6.execute-api.us-east-1.amazonaws.com/dev/usuarios/login',
+        JSON.stringify({
+          user_id: email,
+          password: password,
+        }),
+        {
+          headers: {
+            'Content-Type': 'application/json', // Indicamos que el cuerpo es JSON
+          },
+        }
+      );
+  
+      // Parseamos la respuesta que está en formato de cadena JSON
+      const data = JSON.parse(response.data.body);
+      console.log(data);
+  
+      // Comprobamos si el token está presente
+      if (data.token) {
+        setToken(data.token); // Almacenamos el token en el estado
+        navigate('/dashboard'); // Redirigimos al dashboard
       } else {
-        setError(true); // Si no hay token, mostrar error
+        setError(true); // Si no hay token, mostramos un error
       }
     } catch (error) {
       console.error("Error en la autenticación:", error);
-      setError(true); // Mostrar error si hay un problema con la solicitud
+      setError(true); // Mostramos error si hay un problema con la solicitud
     }
   };
+  
 
   return (
     <Box
