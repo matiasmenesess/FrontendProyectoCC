@@ -8,9 +8,9 @@ const Vuelos = () => {
   const [fechaIda, setFechaIda] = useState('');
   const [fechaVuelta, setFechaVuelta] = useState('');
   const [pasajeros, setPasajeros] = useState(1);
-  const [vuelos, setVuelos] = useState([]); // Inicializamos como un array vacío
+  const [vuelos, setVuelos] = useState([]);
   const [error, setError] = useState(null);
-  const [userId, setUserId] = useState('user123@example.com'); // ID de usuario ficticio para la compra
+  const [userId, setUserId] = useState('user123@example.com');
 
   const handleSearch = async () => {
     try {
@@ -21,8 +21,8 @@ const Vuelos = () => {
       const response = await axios.post(
         'https://k13gnh9gka.execute-api.us-east-1.amazonaws.com/dev/vuelosDestOrg',
         {
-          origen,  // Enviamos directamente 'origen'
-          destino, // Enviamos directamente 'destino'
+          origen,
+          destino,
         },
         {
           headers: {
@@ -34,28 +34,28 @@ const Vuelos = () => {
       console.log("Respuesta de la API:", response);
 
       if (response.status === 200 && response.data) {
-        const data = JSON.parse(response.data.body); // Parseamos el cuerpo de la respuesta
+        const data = JSON.parse(response.data.body);
         if (data.vuelos && data.vuelos.length > 0) {
-          setVuelos(data.vuelos);  // Asignamos los vuelos si existen
-          setError(null);  // Limpiamos el error si la respuesta es exitosa
+          setVuelos(data.vuelos);
+          setError(null);
         } else {
           setVuelos([]);
           setError('No se encontraron vuelos');
         }
       } else {
         setError('Error al buscar vuelos');
-        setVuelos([]);  // Limpiar vuelos si no hay datos
+        setVuelos([]);
       }
     } catch (err) {
       console.error("Error en la solicitud:", err);
       setError('Error en la conexión');
-      setVuelos([]);  // Limpiar vuelos en caso de error
+      setVuelos([]);
     }
   };
 
   const handleComprar = async (vuelo) => {
-    const fechaCompra = new Date().toISOString().split('T')[0]; // Formato 'YYYY-MM-DD'
-    const precioTotal = vuelo.precio.S * pasajeros;  // Suponiendo que precio es un número dentro de 'vuelo.precio.S'
+    const fechaCompra = new Date().toISOString().split('T')[0];
+    const precioTotal = vuelo.precio.S * pasajeros;
 
     const compraData = {
       user_id: userId,
@@ -100,7 +100,7 @@ const Vuelos = () => {
           borderRadius: '8px',
           maxWidth: 800,
           margin: '20px auto',
-          border: '2px solid #f44336',  // Borde rojo agregado
+          border: '2px solid #f44336',
         }}
       >
         <Typography variant="h6" align="center" gutterBottom>
@@ -163,7 +163,7 @@ const Vuelos = () => {
             variant="contained"
             color="error"
             onClick={handleSearch}
-            sx={{ backgroundColor: '#f44336', '&:hover': { backgroundColor: '#e57373' } }} // Botón rojo más claro
+            sx={{ backgroundColor: '#f44336', '&:hover': { backgroundColor: '#e57373' } }}
           >
             Buscar
           </Button>
@@ -176,7 +176,6 @@ const Vuelos = () => {
         )}
       </Box>
 
-      {/* Mostrar los vuelos */}
       {vuelos.length > 0 ? (
         <Box sx={{ marginTop: 4 }}>
           <Typography variant="h6" align="center" gutterBottom color="error">
@@ -200,8 +199,8 @@ const Vuelos = () => {
                       <Button
                         variant="contained"
                         color="primary"
-                        onClick={() => handleComprar(vuelo)} // Lógica de compra
-                        sx={{ backgroundColor: '#f44336', '&:hover': { backgroundColor: '#e57373' } }} // Botón rojo
+                        onClick={() => handleComprar(vuelo)}
+                        sx={{ backgroundColor: '#f44336', '&:hover': { backgroundColor: '#e57373' } }}
                       >
                         Comprar
                       </Button>
