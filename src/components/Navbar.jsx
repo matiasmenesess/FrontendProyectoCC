@@ -9,19 +9,19 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 const CustomButton = styled(Button)(({ active }) => ({
   color: active ? 'red' : '#656567',
   fontWeight: active ? 'bold' : 'normal',
-  fontSize: '13px', // Tamaño de fuente reducido
+  fontSize: '13px',
   textTransform: 'none',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  gap: '4px', // Menos espacio entre el icono y el texto
-  minWidth: '70px', // Ancho mínimo reducido
+  gap: '4px',
+  minWidth: '70px',
   '& .MuiSvgIcon-root': {
     backgroundColor: active ? 'red' : 'transparent',
     color: active ? 'white' : '#656567',
     borderRadius: '50%',
-    padding: active ? '4px' : '0', // Tamaño de padding más pequeño para el icono activo
-    fontSize: '22px', // Tamaño de ícono reducido
+    padding: active ? '4px' : '0',
+    fontSize: '22px',
   },
   '&:hover': {
     color: 'red',
@@ -41,7 +41,7 @@ const Navbar = () => {
         display: 'flex',
         justifyContent: 'center',
         backgroundColor: '#ffffff',
-        padding: '5px 0', // Reducción del padding vertical
+        padding: '5px 0',
         marginTop: '60px',
         boxShadow: 'none',
         border: 'none',
