@@ -1,38 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Typography, Button, Stack } from '@mui/material';
 import axios from 'axios';
-import { useParams, useNavigate } from 'react-router-dom';  // Para obtener el id_vuelo y navegar
+import { useParams, useNavigate } from 'react-router-dom';
 
 const Resenas = () => {
-  const { tenantId, idVuelo } = useParams();  // Obtenemos el tenantId y id_vuelo de la URL
-  const navigate = useNavigate();  // Para navegar a otras páginas
-  const [resenas, setResenas] = useState([]);  // Estado para almacenar las reseñas del vuelo
+  const { tenantId, idVuelo } = useParams();
+  const navigate = useNavigate();
+  const [resenas, setResenas] = useState([]);
 
-  // Función para obtener las reseñas del vuelo
   const fetchResenas = async () => {
     try {
       const response = await axios.post('https://1zjv6rnb4l.execute-api.us-east-1.amazonaws.com/dev/reviewsGet', {
-        id_vuelo: idVuelo,  // Enviamos el id_vuelo en la solicitud
+        id_vuelo: idVuelo,
       });
 
-      // Parseamos la respuesta JSON
       const data = JSON.parse(response.data.body);
 
-      // Verificamos si la propiedad 'reseñas' existe y es un array
       if (Array.isArray(data.reseñas)) {
-        setResenas(data.reseñas);  // Guardamos las reseñas en el estado
+        setResenas(data.reseñas);
       } else {
         console.error('La respuesta de la API no contiene un array de reseñas.');
-        setResenas([]);  // Si no es un array, establecemos el estado como un array vacío
+        setResenas([]);
       }
     } catch (error) {
       console.error('Error fetching reseñas:', error);
-      setResenas([]);  // En caso de error, establecemos el estado como un array vacío
+      setResenas([]);
     }
   };
 
   useEffect(() => {
-    fetchResenas();  // Llamamos a la función cuando se monta el componente
+    fetchResenas();
   }, [idVuelo]);
 
   return (
@@ -59,8 +56,8 @@ const Resenas = () => {
       <Stack spacing={2} direction="row" justifyContent="center" sx={{ marginTop: '20px' }}>
         <Button 
           variant="contained" 
-          sx={{ backgroundColor: '#e31c22', '&:hover': { backgroundColor: '#b71c1c' } }}  // Estilo para el botón rojo
-          onClick={() => navigate(`/aerolineas`)}  // Redirige a la página de vuelos de la aerolínea
+          sx={{ backgroundColor: '#e31c22', '&:hover': { backgroundColor: '#b71c1c' } }} 
+          onClick={() => navigate(`/aerolineas`)}
         >
           Volver a Aerolineas
         </Button>
