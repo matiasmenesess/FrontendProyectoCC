@@ -11,7 +11,7 @@ const VuelosDisponibles = () => {
   // Función para obtener los vuelos de la aerolínea
   const fetchVuelos = async () => {
     try {
-      const response = await axios.post('https://76kk3rnrfc.execute-api.us-east-1.amazonaws.com/dev/vuelosget', {
+      const response = await axios.post('https://k13gnh9gka.execute-api.us-east-1.amazonaws.com/dev/vuelosget', {
         tenant_id: tenantId,  // Enviamos el tenant_id en la solicitud
       });
 

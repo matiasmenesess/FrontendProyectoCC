@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { Box, TextField, Button, Stack, Typography } from '@mui/material';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';  // Importamos useNavigate para redirigir
 
 const AereolineaForm = () => {
-  const [codigo, setCodigo] = useState('');
-  const [vuelos, setVuelos] = useState([]);
+  const [codigo, setCodigo] = useState('');  // Código de aerolínea (o tenant_id)
+  const [vuelos, setVuelos] = useState([]);  // Vuelos asociados a la aerolínea
+  const navigate = useNavigate();  // Inicializamos useNavigate
 
   // Obtener el token del localStorage
-  const token = localStorage.getItem('token');  
+  const token = localStorage.getItem('token');
 
   const handleSearch = async () => {
     try {
@@ -16,12 +18,17 @@ const AereolineaForm = () => {
         { token }
       );
       const data = JSON.parse(response.data.body);
-      const aerolinea = data.aerolineas.find(aero => aero.codigo.S === codigo);
+      
+      // Buscamos la aerolínea por su tenant_id
+      const aerolinea = data.aerolineas.find(aero => aero.tenant_id?.S === codigo);  // Buscar por tenant_id
+
       if (aerolinea) {
-        // Simular los vuelos de esa aerolínea
-        setVuelos([ /* Aquí irían los vuelos de la aerolínea */ ]);
+        // Si encontramos la aerolínea, redirigimos a la página de vuelos
+        navigate(`/vuelos/${aerolinea.tenant_id?.S}`);  // Redirigimos usando el tenant_id
       } else {
+        // Si no encontramos la aerolínea, mostramos un mensaje
         setVuelos([]);
+        alert('Aerolínea no encontrada');
       }
     } catch (error) {
       console.error('Error searching flights:', error);
@@ -32,7 +39,7 @@ const AereolineaForm = () => {
     <Box sx={{ padding: '20px', maxWidth: 600, margin: '0 auto' }}>
       <Stack spacing={2}>
         <TextField
-          label="Código de la Aerolínea"
+          label="Tenant ID de la Aerolínea"  // Lo cambiamos para hacer referencia al tenant_id
           variant="outlined"
           fullWidth
           value={codigo}
