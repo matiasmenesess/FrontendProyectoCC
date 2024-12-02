@@ -4,31 +4,29 @@ import { useNavigate } from 'react-router-dom';
 import HeaderLogin from '../components/HeaderLogin';
 import EmailIcon from '@mui/icons-material/Email';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import axios from 'axios'; // Importa axios
+import axios from 'axios';
 
 const SignIn = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState(''); // Estado para la contraseña
+  const [password, setPassword] = useState('');
   const [step, setStep] = useState(1);
   const [error, setError] = useState(false);
-  const [token, setToken] = useState(null); // Estado para almacenar el token
+  const [token, setToken] = useState(null);
 
   const handleNext = () => {
     if (step === 1) {
-      // Verificar si el campo de correo electrónico es válido
       if (!email || !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)) {
         setError(true);
       } else {
         setError(false);
-        setStep(2); // Pasar al siguiente formulario
+        setStep(2);
       }
     }
   };
 
   const handleLogin = async () => {
     try {
-      // Llamada a la API
       const response = await axios.post(
         'https://6bk8qafhu6.execute-api.us-east-1.amazonaws.com/dev/usuarios/login',
         JSON.stringify({
@@ -37,29 +35,25 @@ const SignIn = () => {
         }),
         {
           headers: {
-            'Content-Type': 'application/json', // Indicamos que el cuerpo es JSON
+            'Content-Type': 'application/json',
           },
         }
       );
   
-      // Parseamos la respuesta que está en formato de cadena JSON
       const data = JSON.parse(response.data.body);
-      console.log(data);
   
-      // Comprobamos si el token está presente
       if (data.token) {
-        setToken(data.token); // Almacenamos el token en el estado
+        setToken(data.token);
         localStorage.setItem('token', data.token);
-        navigate('/dashboard'); // Redirigimos al dashboard
+        navigate('/dashboard');
       } else {
-        setError(true); // Si no hay token, mostramos un error
+        setError(true);
       }
     } catch (error) {
       console.error("Error en la autenticación:", error);
-      setError(true); // Mostramos error si hay un problema con la solicitud
+      setError(true);
     }
   };
-  
 
   return (
     <Box
@@ -256,7 +250,7 @@ const SignIn = () => {
 
               <Button
                 variant="contained"
-                onClick={handleLogin} // Llamada a la API
+                onClick={handleLogin}
                 sx={{
                   textTransform: 'none',
                   fontFamily: 'Poppins, sans-serif',
