@@ -13,7 +13,7 @@ import SignUp from './pages/SignUp';
 import VerResenaAereolinea from './pages/VerResenaAereolinea';
 import Vuelos from './pages/Vuelos';
 import VuelosDisponibles from './pages/VuelosDisponibles';
-
+import Resenas from './pages/Resenas';
 // Componente para manejar el layout principal
 function MainLayout() {
   const location = useLocation();
@@ -33,6 +33,7 @@ function MainLayout() {
         <Route path="/login" element={<Login />} />
         <Route path="/login/signin" element={<SignIn />} />
         <Route path="/login/signup" element={<SignUp />} />
+        <Route path="/resenas/:idVuelo" element={<Resenas />} />
         <Route path="/ver-resena" element={<VerResenaAereolinea />} />
         <Route path="/vuelos" element={<Vuelos />} />
       </Routes>
