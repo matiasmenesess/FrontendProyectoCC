@@ -12,17 +12,16 @@ export const HeaderNonLogin = () => {
   const [token, setToken] = useState(null);
 
   useEffect(() => {
-    // Obtener el token del almacenamiento local
     const savedToken = localStorage.getItem('token');
     if (savedToken) {
-      setToken(savedToken); // Si hay token, lo guardamos en el estado
+      setToken(savedToken);
     }
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem('token'); // Eliminar el token del almacenamiento local
-    setToken(null); // Limpiar el estado del token
-    navigate('/login'); // Redirigir al login
+    localStorage.removeItem('token');
+    setToken(null);
+    navigate('/login');
   };
 
   return (
@@ -40,7 +39,6 @@ export const HeaderNonLogin = () => {
         padding: '0 1rem',
       }}
     >
-      {/* Bloque izquierdo con fondo blanco */}
       <Box
         display="flex"
         alignItems="center"
@@ -63,7 +61,6 @@ export const HeaderNonLogin = () => {
         />
       </Box>
 
-      {/* Bloque derecho con fondo whitesmoke */}
       <Box
         sx={{
           display: 'flex',
@@ -114,7 +111,6 @@ export const HeaderNonLogin = () => {
           sx={{ backgroundColor: '#b0b0b0', height: '40px', alignSelf: 'center', marginRight: '1rem', width: '1px' }}
         />
 
-        {/* Mostrar "Iniciar Sesión" si no hay token, o "Cerrar Sesión" si el token está presente */}
         {!token ? (
           <Box
             onClick={() => navigate('/login')}
@@ -136,7 +132,7 @@ export const HeaderNonLogin = () => {
           </Box>
         ) : (
           <Box
-            onClick={handleLogout} // Llamada para hacer logout
+            onClick={handleLogout}
             sx={{
               display: 'flex',
               alignItems: 'center',
