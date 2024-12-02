@@ -3,29 +3,24 @@ import { Box, Typography, Stack, Button, Pagination } from '@mui/material';
 import axios from 'axios';
 
 const Destinos = () => {
-  const [destinos, setDestinos] = useState([]);  // Estado para almacenar los destinos
-  const [page, setPage] = useState(1);  // Estado para la página actual
-  const [totalPages, setTotalPages] = useState(1);  // Total de páginas para la paginación
+  const [destinos, setDestinos] = useState([]);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
-  // Función para obtener destinos del backend
   const fetchDestinos = async (pageNumber = 1) => {
     try {
       const response = await axios.post('https://m30oie9cj2.execute-api.us-east-1.amazonaws.com/dev/destinosget');
-      const data = JSON.parse(response.data.body);  // Parseamos el JSON
+      const data = JSON.parse(response.data.body);
 
-      // Ordenamos los destinos por popularidad de mayor a menor
       const sortedDestinos = data.destinos.sort((a, b) => b.popularidad - a.popularidad);
 
-      // Paginamos los destinos
       const itemsPerPage = 5;
       const startIndex = (pageNumber - 1) * itemsPerPage;
       const paginatedDestinos = sortedDestinos.slice(startIndex, startIndex + itemsPerPage);
 
-      // Calculamos el total de páginas
       const totalDestinos = sortedDestinos.length;
       const totalPagesCalculated = Math.ceil(totalDestinos / itemsPerPage);
 
-      // Actualizamos el estado con los destinos y la paginación
       setDestinos(paginatedDestinos);
       setTotalPages(totalPagesCalculated);
     } catch (error) {
@@ -33,14 +28,12 @@ const Destinos = () => {
     }
   };
 
-  // Llamamos a la función de obtener destinos cuando se monta el componente o cambia la página
   useEffect(() => {
-    fetchDestinos(page);  // Pasamos la página actual
+    fetchDestinos(page);
   }, [page]);
 
-  // Función para manejar el cambio de página
   const handlePageChange = (event, value) => {
-    setPage(value);  // Actualizamos la página actual
+    setPage(value);
   };
 
   return (
@@ -68,7 +61,7 @@ const Destinos = () => {
               </Typography>
               <Button
                 variant="contained"
-                color="error"  // El botón será rojo
+                color="error"
                 href={`https://es.wikipedia.org/wiki/${destino.ciudad}`}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -82,20 +75,20 @@ const Destinos = () => {
 
       <Stack spacing={2} direction="row" justifyContent="center" sx={{ marginTop: '20px' }}>
         <Pagination
-          count={totalPages}  // Total de páginas
-          page={page}  // Página actual
-          onChange={handlePageChange}  // Cambio de página
+          count={totalPages}
+          page={page}
+          onChange={handlePageChange}
           color="primary"
           sx={{
             '& .MuiPaginationItem-root': {
-              color: '#e31c22',  // Rojo para las páginas no seleccionadas
+              color: '#e31c22',
             },
             '& .MuiPaginationItem-page.Mui-selected': {
-              backgroundColor: '#b71c1c',  // Rojo oscuro para la página seleccionada
-              color: '#fff',  // Texto blanco en la página seleccionada
+              backgroundColor: '#b71c1c',
+              color: '#fff',
             },
             '& .MuiPaginationItem-root:hover': {
-              backgroundColor: '#f1b0b7',  // Color de fondo rojo claro al pasar el cursor
+              backgroundColor: '#f1b0b7',
             },
           }}
         />
