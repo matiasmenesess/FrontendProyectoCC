@@ -12,6 +12,7 @@ import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import VerResenaAereolinea from './pages/VerResenaAereolinea';
 import Vuelos from './pages/Vuelos';
+import VuelosDisponibles from './pages/VuelosDisponibles';
 
 // Componente para manejar el layout principal
 function MainLayout() {
@@ -25,6 +26,7 @@ function MainLayout() {
       {!isLoginPage && <Navbar />}
       <Routes>
         <Route path="/" element={<FlightSearchForm />} />
+        <Route path="/vuelos/:tenantId" element={<VuelosDisponibles />} />  {/* Ruta para los vuelos */}
         <Route path="/aerolineas" element={<Aerolineas />} />
         <Route path="/comprar" element={<ComprarVuelo />} />
         <Route path="/destinos" element={<Destinos />} />

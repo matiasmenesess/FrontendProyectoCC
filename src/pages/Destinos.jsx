@@ -29,7 +29,7 @@ const Destinos = () => {
             </Typography>
             <Button
               variant="contained"
-              color="primary"
+              color="error"  // Cambio aquí para hacer el botón rojo
               href={destination.wiki}
               target="_blank"
               rel="noopener noreferrer"
@@ -44,4 +44,3 @@ const Destinos = () => {
 };
 
 export default Destinos;
-
