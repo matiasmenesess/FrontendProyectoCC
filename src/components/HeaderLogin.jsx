@@ -6,36 +6,33 @@ export const HeaderLogin = () => {
   return (
     <Box
       sx={{
-        position: 'fixed', // Fijado en la parte superior
+        position: 'fixed',
         top: 0,
         width: '100%',
-        height: '40px', // Mantén la altura del header pequeña
+        height: '40px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: '0.5rem 2rem', // Ajusta el padding para más espacio en los lados
+        padding: '0.5rem 2rem',
         backgroundColor: 'white',
         boxShadow: 'none',
-        zIndex: 1000, // Asegura que el header esté sobre otros elementos
+        zIndex: 1000,
       }}
     >
-      {/* Logo */}
-      <Box display="flex" alignItems="center" sx={{ marginLeft: '20rem' }}> {/* Ajusta el margen izquierdo */}
+      <Box display="flex" alignItems="center" sx={{ marginLeft: '20rem' }}>
         <Box
           component="img"
-          src="/assets/logo.png" // Asegúrate de que esta ruta sea correcta
+          src="/assets/logo.png"
           alt="cloudfly logo"
           sx={{
-            height: 90, // Tamaño grande para el logo sin aumentar la altura del header
-            width: 'auto', // Mantiene la proporción del logo
-            marginRight: '1rem', // Añade espacio entre el logo y el texto
+            height: 90,
+            width: 'auto',
+            marginRight: '1rem',
           }}
         />
-
       </Box>
 
-      {/* Botón de Ayuda */}
-      <IconButton aria-label="ayuda" sx={{ color: '#737578', marginRight: '20rem',          fontWeight: 'bold'}}>
+      <IconButton aria-label="ayuda" sx={{ color: '#737578', marginRight: '20rem', fontWeight: 'bold' }}>
         <HelpOutlineIcon />
         <Typography variant="body2" sx={{ marginLeft: '0.3rem' }}>
           Ayuda
