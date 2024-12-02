@@ -9,20 +9,16 @@ const FlightSearchForm = () => {
   const [fechaVuelta, setFechaVuelta] = useState('');
   const [clase, setClase] = useState('Economy');
   const [pasajeros, setPasajeros] = useState(1);
-  const [vuelos, setVuelos] = useState([]); // Inicializamos como un array vacío
+  const [vuelos, setVuelos] = useState([]);
   const [error, setError] = useState(null);
 
   const handleSearch = async () => {
     try {
-      console.log("Buscando vuelos...");
-      console.log("Origen:", origen);
-      console.log("Destino:", destino);
-
       const response = await axios.post(
         'https://k13gnh9gka.execute-api.us-east-1.amazonaws.com/dev/vuelosDestOrg',
         {
-          origen,  // Enviamos directamente 'origen'
-          destino, // Enviamos directamente 'destino'
+          origen,
+          destino,
         },
         {
           headers: {
@@ -30,26 +26,24 @@ const FlightSearchForm = () => {
           },
         }
       );
-      
-      console.log("Respuesta de la API:", response);
 
       if (response.status === 200 && response.data) {
         const data = response.data;
         if (data.vuelos && data.vuelos.length > 0) {
-          setVuelos(data.vuelos);  // Asignamos los vuelos si existen
-          setError(null);  // Limpiamos el error si la respuesta es exitosa
+          setVuelos(data.vuelos);
+          setError(null);
         } else {
           setVuelos([]);
           setError('No se encontraron vuelos');
         }
       } else {
         setError('Error al buscar vuelos');
-        setVuelos([]);  // Limpiar vuelos si no hay datos
+        setVuelos([]);
       }
     } catch (err) {
       console.error("Error en la solicitud:", err);
       setError('Error en la conexión');
-      setVuelos([]);  // Limpiar vuelos en caso de error
+      setVuelos([]);
     }
   };
 
@@ -123,7 +117,7 @@ const FlightSearchForm = () => {
           variant="contained"
           color="error"
           onClick={handleSearch}
-          sx={{ backgroundColor: '#f44336', '&:hover': { backgroundColor: '#e57373' } }} // Botón rojo más claro
+          sx={{ backgroundColor: '#f44336', '&:hover': { backgroundColor: '#e57373' } }}
         >
           Buscar
         </Button>
