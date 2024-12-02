@@ -59,7 +59,7 @@ const Login = () => {
                 borderColor: '#e31c22',
                 '&:hover': {
                   backgroundColor: '#e31c22',
-                  color: '#ffffff', // Cambia el color de las letras a blanco al pasar el cursor
+                  color: '#ffffff',
                   borderColor: '#e31c22',
                 },
               }}
@@ -79,7 +79,7 @@ const Login = () => {
                 borderColor: '#e31c22',
                 '&:hover': {
                   backgroundColor: '#e31c22',
-                  color: '#ffffff', // Cambia el color de las letras a blanco al pasar el cursor
+                  color: '#ffffff',
                   borderColor: '#e31c22',
                 },
               }}
